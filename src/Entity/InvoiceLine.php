@@ -2,11 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource()
+ * @ApiResource(attributes={"order"={"sequence": "ASC"}})
+ * @ApiFilter(SearchFilter::class, properties={"Invoice": "exact"})
  * @ORM\Entity(repositoryClass="App\Repository\InvoiceLineRepository")
  */
 class InvoiceLine
@@ -42,6 +45,11 @@ class InvoiceLine
      * @ORM\ManyToOne(targetEntity="App\Entity\Invoice", inversedBy="invoiceLines")
      */
     private $Invoice;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $sequence;
 
     public function getId(): ?int
     {
@@ -104,6 +112,18 @@ class InvoiceLine
     public function setInvoice(?Invoice $Invoice): self
     {
         $this->Invoice = $Invoice;
+
+        return $this;
+    }
+
+    public function getSequence(): ?int
+    {
+        return $this->sequence;
+    }
+
+    public function setSequence(?int $sequence): self
+    {
+        $this->sequence = $sequence;
 
         return $this;
     }

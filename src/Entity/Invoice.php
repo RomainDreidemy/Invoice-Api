@@ -45,6 +45,11 @@ class Invoice
      */
     private $invoiceLines;
 
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $name;
+
     public function __construct()
     {
         $this->invoiceLines = new ArrayCollection();
@@ -130,6 +135,18 @@ class Invoice
                 $invoiceLine->setInvoice(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
